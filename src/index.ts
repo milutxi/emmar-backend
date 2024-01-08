@@ -3,13 +3,19 @@ import express from 'express';
 import mongoose from 'mongoose';
 
 const app = express()
-//create handlers
-app.use('/', (req, res) => {
-    console.log('Root route hit');
 
-    res.send("Hello, youuuu!");
+//middleware
+app.use(express.json());
+
+
+//create handlers
+app.post('/registerClient', (req, res) => {
+    const {name, eftername, telephone, email, dateOfBirth} = req.body;
+
+    res.send({name, eftername, telephone, email, dateOfBirth});
 })
 
+//MongoDB Connection through .env file to hide the URL
 const mongoURL = process.env.DB_URL;
 
 if(!mongoURL) throw Error("Missing db url");
