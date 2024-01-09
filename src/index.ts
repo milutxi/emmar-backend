@@ -10,9 +10,9 @@ app.use(express.json());
 
 //create handlers
 app.post('/registerClient', (req, res) => {
-    const {name, eftername, telephone, email, dateOfBirth} = req.body;
+    const {name, lastName, telephone, email, dateOfBirth} = req.body;
 
-    res.send({name, eftername, telephone, email, dateOfBirth});
+    res.send({name, lastName, telephone, email, dateOfBirth});
 })
 
 //MongoDB Connection through .env file to hide the URL
