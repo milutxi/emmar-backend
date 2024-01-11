@@ -8,9 +8,10 @@ const app = express()
 app.use(express.json());
 
 //create handlers
-app.use('/', (req, res) => {
-   console.log('Root route hit');
-   res.send("Hello world!")   
+app.use('/registerClient', (req, res) => {
+   const {name, lastName, telephone, email, dateOfBirth} = req.body;
+
+   res.send({name, lastName, telephone, email, dateOfBirth});   
 });
 
 //MongoDB Connection through .env file to hide the URL
@@ -25,4 +26,3 @@ mongoose.connect(mongoURL)
             console.log('Hola Sheila, Server listening on port ' + port);
         })
     })
-    
