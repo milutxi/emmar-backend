@@ -8,7 +8,7 @@ const app = express()
 app.use(express.json());
 
 //create handlers
-app.use('/registerClient', (req, res) => {
+app.post('/registerClient', (req, res) => {
    const {name, lastName, telephone, email, dateOfBirth} = req.body;
 
    res.send({name, lastName, telephone, email, dateOfBirth});   
