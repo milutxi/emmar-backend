@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import Client from "../models/Clients";
 
-
-
 export const registerClient = async (req: Request, res: Response) => {
     const {name, lastName, telephone, email, dateOfBirth} = req.body;
 
