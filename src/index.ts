@@ -1,7 +1,7 @@
 import "dotenv/config";
 import express from 'express';
 import mongoose from 'mongoose';
-import Client from "./models/Clients";
+import * as clientController from './controllers/client';
 
 const app = express()
 
@@ -9,23 +9,10 @@ const app = express()
 app.use(express.json());
 
 //create handlers
-app.post('/registerClient', async (req, res) => {
-   const {name, lastName, telephone, email, dateOfBirth} = req.body;
-
-   try {
-        const client = new Client({
-            name,
-            lastName,
-            telephone,
-            email,
-            dateOfBirth
-         })
-         const savedClient = await client.save();
-         res.status(201).json(savedClient);  
-   } catch (error) {
-        res.status(500).json({message: 'Failed to create the client'});
-   }
-});
+app.post('/registerClient', clientController.registerClient)
+//app.get('/registerClient', clientController.getAllClients);
+//app.get('/registerClients/:id', clientController.getClient);
+//app.delete('registerClient/:clientId', clientController.deleteClient);
 
 //MongoDB Connection through .env file to hide the URL
 const mongoURL = process.env.DB_URL;
