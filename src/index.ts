@@ -2,10 +2,13 @@ import "dotenv/config";
 import express from 'express';
 import mongoose from 'mongoose';
 import * as clientController from './controllers/client';
+import cors from "cors";
 
 const app = express()
 
 //middleware
+
+app.use(cors());
 app.use(express.json());
 
 //create handlers
