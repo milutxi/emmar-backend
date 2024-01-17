@@ -14,19 +14,26 @@ const ClientSchema = new Schema<IClient>({
     name: {
         type: String,
         required: true,
+        trim: true,
     },
     lastName: {
         type: String,
         required: true,
+        trim: true,
     },
     telephone: {
         type: Number,
+        required: true,
+        trim: true,
     },
     email: {
         type: String,
+        trim: true,
     },
     dateOfBirth: {
         type: Date,
+        required: true,
+        trim: true,
     }
 }, {
     timestamps: true
