@@ -18,3 +18,9 @@ export const registerClient = async (req: Request, res: Response) => {
         res.status(500).json({message: 'Failed to create the client'});
    }
 }
+
+export const getAllClients = async (req: Request, res: Response) => {
+     const clients = await Client.find();
+
+     res.status(200).json(clients)
+}

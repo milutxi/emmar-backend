@@ -12,10 +12,10 @@ app.use(cors());
 app.use(express.json());
 
 //create handlers
-app.post('/registerClient', clientController.registerClient)
-//app.get('/registerClient', clientController.getAllClients);
-//app.get('/registerClients/:id', clientController.getClient);
-//app.delete('registerClient/:clientId', clientController.deleteClient);
+app.post('/clients', clientController.registerClient)
+app.get('/clients', clientController.getAllClients);
+//app.get('/clients/:id', clientController.getClient);
+//app.delete('client/:clientId', clientController.deleteClient);
 
 //MongoDB Connection through .env file to hide the URL
 const mongoURL = process.env.DB_URL;
