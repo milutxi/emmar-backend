@@ -1,7 +1,7 @@
 import "dotenv/config";
 import express from 'express';
 import mongoose from 'mongoose';
-import * as clientController from './controllers/client';
+import * as clientController from './controllers/clients';
 import cors from "cors";
 
 const app = express()
@@ -17,6 +17,10 @@ app.get('/clients', clientController.getAllClients);
 //app.get('/clients/:id', clientController.getClient);
 //app.delete('client/:clientId', clientController.deleteClient);
 
+app.get('/', (req, res) => {
+    res.json({mssg: 'welcome to the app'})
+})
+
 //MongoDB Connection through .env file to hide the URL
 const mongoURL = process.env.DB_URL;
 
@@ -29,3 +33,4 @@ mongoose.connect(mongoURL)
             console.log('Hola Sheila, Server listening on port ' + port);
         })
     })
+
