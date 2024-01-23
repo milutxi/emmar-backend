@@ -1,8 +1,8 @@
 import "dotenv/config";
 import express from 'express';
 import mongoose from 'mongoose';
-import * as clientController from './controllers/clients';
 import cors from "cors";
+import * as clientController from './controllers/clients';
 
 const app = express()
 
