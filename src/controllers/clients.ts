@@ -24,3 +24,15 @@ export const getAllClients = async (req: Request, res: Response) => {
 
      res.status(200).json(clients)
 }
+
+export const getClient = async (req: Request, res: Response) => {
+     const {id} = req.params;
+
+     const client = await Client.findById(id);  
+
+     if(!client) {
+          return res.status(404).json({message: 'No client found with this id: ' + id})
+     }
+
+     res.status(200).json(client)
+}

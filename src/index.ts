@@ -14,7 +14,7 @@ app.use(express.json());
 //create handlers
 app.post('/clients', clientController.registerClient)
 app.get('/clients', clientController.getAllClients);
-//app.get('/clients/:id', clientController.getClient);
+app.get('/clients/:id', clientController.getClient);
 //app.delete('client/:clientId', clientController.deleteClient);
 
 app.get('/', (req, res) => {
