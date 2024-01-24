@@ -16,6 +16,7 @@ app.post("/clients", clientController.registerClient);
 app.get("/clients", clientController.getAllClients);
 app.get("/clients/:id", clientController.getClient);
 app.delete("/clients/:id", clientController.deleteClient);
+app.patch("/clients/:id", clientController.editClient);
 
 app.get("/", (req, res) => {
   res.json({ mssg: "welcome to the app" });

@@ -14,27 +14,38 @@ export const registerClient = async (req: Request, res: Response) => {
          })
          const savedClient = await client.save();
          res.status(201).json(savedClient);  
-   } catch (error) {
-        res.status(500).json({message: 'Failed to create the client'});
-   }
+
+     }catch(error:any){
+          return res.status(500).json({message: 'Internal Server Error', error: error.message});
+     }
 }
 
 export const getAllClients = async (req: Request, res: Response) => {
-     const clients = await Client.find();
+     try{
+          const clients = await Client.find();
 
-     res.status(200).json(clients)
+          res.status(200).json(clients)
+
+     }catch(error:any){
+          return res.status(500).json({message: 'Internal Server Error', error: error.message});
+     }
 }
 
 export const getClient = async (req: Request, res: Response) => {
      const {id} = req.params;
 
-     const client = await Client.findById(id);  
+     try{
+          const client = await Client.findById(id);  
 
-     if(!client) {
-          return res.status(404).json({message: 'No client found with this id: ' + id})
+          if(!client) {
+               return res.status(404).json({message: 'No client found with this id: ' + id})
+          }
+
+          res.status(200).json(client)
+
+     }catch(error:any){
+          return res.status(500).json({message: 'Internal Server Error', error: error.message});
      }
-
-     res.status(200).json(client)
 }
 
 export const deleteClient = async (req: Request, res: Response) => {
@@ -50,8 +61,29 @@ export const deleteClient = async (req: Request, res: Response) => {
           await client.deleteOne()
 
           return res.status(200).json({message: 'Client deleted'});
-     }catch(error){
-          return res.status(500).json({message: 'Internal Server Error'});
-     }
 
+     }catch(error:any){
+          return res.status(500).json({message: 'Internal Server Error', error: error.message});
+     }
+}
+
+export const editClient = async (req: Request, res: Response) => {
+     const {id} = req.params;
+     const {updatedData} = req.body;
+
+     try{
+          const client = await Client.findById(id);
+
+          if(!client) {
+               return res.status(404).json({message: 'No client found with this id: ' + id});
+          }
+
+          Object.assign(client, updatedData)
+
+          const updatedClient = await client.save()
+          return res.status(200).json(updatedClient)
+
+     }catch(error:any){
+          return res.status(500).json({message: 'Internal Server Error', error: error.message});
+     }
 }
