@@ -36,3 +36,22 @@ export const getClient = async (req: Request, res: Response) => {
 
      res.status(200).json(client)
 }
+
+export const deleteClient = async (req: Request, res: Response) => {
+     const {id} = req.params;
+
+     try{
+          const client = await Client.findById(id);
+
+          if(!client) {
+               return res.status(404).json({message: 'No client found with this id: ' + id});
+          }
+
+          await client.deleteOne()
+
+          return res.status(200).json({message: 'Client deleted'});
+     }catch(error){
+          return res.status(500).json({message: 'Internal Server Error'});
+     }
+
+}
