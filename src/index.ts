@@ -28,7 +28,7 @@ const mongoURL = process.env.DB_URL;
 if (!mongoURL) throw Error("Missing db url");
 
 mongoose.connect(mongoURL).then(() => {
-  const port = parseInt(process.env.PORT || "3000");
+  const port = parseInt(process.env.PORT || "4000");
   app.listen(port, () => {
     console.log("Hola Sheila, Server listening on port " + port);
   });
