@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import * as clientController from "./controllers/clients";
 import * as diagnosController from "./controllers/diagnos";
+import * as treatmentController from "./controllers/treatments";
 
 const app = express();
 
@@ -25,6 +26,13 @@ app.get("/diagnos", diagnosController.getAllDiagnos);
 app.get("/diagnos/:id", diagnosController.getDiagnos);
 app.delete("/diagnos/:id", diagnosController.deleteDiagnos);
 app.patch("/diagnos/:id", diagnosController.editDiagnos);
+
+// handlers for treatments
+app.post("/treatment", treatmentController.registerTreatment)
+app.get("/treatment", treatmentController.getAllTreatments);
+app.get("/treatment/:id", treatmentController.getTreatment);
+app.delete("/treatment/:id", treatmentController.deleteTreatment);
+app.patch("/treatment/:id", treatmentController.editTreatment);
 
 
 

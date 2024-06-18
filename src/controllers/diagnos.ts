@@ -4,7 +4,7 @@ import Diagnos from "../models/diagnos";
 export const registerDiagnos = async (req: Request, res: Response) => {
     const {dname} = req.body;
 if (!dname){
-    return res.status(400).json({message: "dname is required"});
+    return res.status(400).json({message: "diagnos name is required"});
 }
     try {
         const diagnos = new Diagnos({
@@ -73,7 +73,7 @@ export const editDiagnos = async (req: Request, res: Response) => {
 
         const updatedDiagnos = await diagnos.save()
         return res.status(200).json(updatedDiagnos)
-        
+
     } catch (error:any) {
         return res.status(500).json({message: 'Internal Server Error', error: error.message});
     }
