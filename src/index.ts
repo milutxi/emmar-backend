@@ -5,6 +5,7 @@ import cors from "cors";
 import * as clientController from "./controllers/clients";
 import * as diagnosController from "./controllers/diagnos";
 import * as treatmentController from "./controllers/treatments";
+import * as machineController from "./controllers/machines";
 
 const app = express();
 
@@ -28,11 +29,18 @@ app.delete("/diagnos/:id", diagnosController.deleteDiagnos);
 app.patch("/diagnos/:id", diagnosController.editDiagnos);
 
 // handlers for treatments
-app.post("/treatment", treatmentController.registerTreatment)
+app.post("/treatment", treatmentController.registerTreatment);
 app.get("/treatment", treatmentController.getAllTreatments);
 app.get("/treatment/:id", treatmentController.getTreatment);
 app.delete("/treatment/:id", treatmentController.deleteTreatment);
 app.patch("/treatment/:id", treatmentController.editTreatment);
+
+// handlers for machines
+app.post("/machine", machineController.registerMachine);
+app.get("/machine", machineController.getAllMachines);
+app.get("/machine/:id", machineController.getMachine);
+app.delete("/machine/:id", machineController.deleteMachine);
+app.patch("/machine/:id", machineController.editMachine);
 
 
 
