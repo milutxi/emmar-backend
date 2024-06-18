@@ -3,6 +3,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import * as clientController from "./controllers/clients";
+import * as diagnosController from "./controllers/diagnos";
 
 const app = express();
 
@@ -11,15 +12,24 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-//create handlers
+//handlers for clients
 app.post("/clients", clientController.registerClient);
 app.get("/clients", clientController.getAllClients);
 app.get("/clients/:id", clientController.getClient);
 app.delete("/clients/:id", clientController.deleteClient);
 app.patch("/clients/:id", clientController.editClient);
 
+// handlers for diagnos
+app.post("/diagnos", diagnosController.registerDiagnos);
+app.get("/diagnos", diagnosController.getAllDiagnos);
+app.get("/diagnos/:id", diagnosController.getDiagnos);
+app.delete("/diagnos/:id", diagnosController.deleteDiagnos);
+app.patch("/diagnos/:id", diagnosController.editDiagnos);
+
+
+
 app.get("/", (req, res) => {
-  res.json({ mssg: "welcome to the app" });
+  res.json({ message: "welcome to the app" });
 });
 
 //MongoDB Connection through .env file to hide the URL
