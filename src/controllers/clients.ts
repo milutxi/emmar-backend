@@ -69,21 +69,25 @@ export const deleteClient = async (req: Request, res: Response) => {
 
 export const editClient = async (req: Request, res: Response) => {
      const {id} = req.params;
-     const {updatedData} = req.body;
+     const {name, lastName, telephone, email, dateOfBirth} = req.body;
 
      try{
-          const client = await Client.findById(id);
+          const client = await Client.findById(req.params.id);
 
           if(!client) {
                return res.status(404).json({message: 'No client found with this id: ' + id});
           }
 
-          Object.assign(client, updatedData)
+          client.name = name || client.name;
+          client.lastName = lastName || client.lastName;
+          client.telephone = telephone || client.telephone;
+          client.email = email || client.email;
+          client.dateOfBirth = dateOfBirth || client.dateOfBirth;
 
-          const updatedClient = await client.save()
-          return res.status(200).json(updatedClient)
+          const updatedClient = await client.save();
+          res.status(200).json(updatedClient);
 
      }catch(error:any){
           return res.status(500).json({message: 'Internal Server Error', error: error.message});
      }
-}
+}        
