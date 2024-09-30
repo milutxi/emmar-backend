@@ -10,6 +10,9 @@ interface IMachine extends Document {
     mComments: string;
     mStartLeasingDate: Date;
     mFinishLeasingDate: Date;
+    mPurchaseDate: Date;
+    mServiceLokalDate: Date;
+    mServiceManufactureDate: Date;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -51,7 +54,19 @@ const MachineSchema = new Schema<IMachine>({
     mFinishLeasingDate: {
         type: Date,
         trim: true,
-    }
+    },
+    mPurchaseDate: {
+        type: Date,
+        trim: true,
+    }, 
+    mServiceLokalDate: {
+        type: Date,
+        trim: true,
+    }, 
+    mServiceManufactureDate: {
+        type: Date,
+        trim: true,
+    } 
 }, {
     timestamps: true
 });

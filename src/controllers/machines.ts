@@ -11,7 +11,11 @@ export const registerMachine = async (req: Request, res: Response) => {
         mDescription, 
         mComments, 
         mStartLeasingDate, 
-        mFinishLeasingDate} = req.body;
+        mFinishLeasingDate,
+        mPurchaseDate,
+        mServiceLokalDate,
+        mServiceManufactureDate
+    } = req.body;
 if (!mName){
     return res.status(400).json({message: "machine name is required"});
 }
@@ -25,7 +29,10 @@ if (!mName){
             mDescription, 
             mComments, 
             mStartLeasingDate, 
-            mFinishLeasingDate
+            mFinishLeasingDate,
+            mPurchaseDate,
+            mServiceLokalDate,
+            mServiceManufactureDate
         });
         const savedMachine = await machine.save();
         res.status(201).json(savedMachine);
@@ -88,7 +95,10 @@ export const editMachine = async (req: Request, res: Response) => {
         mDescription, 
         mComments, 
         mStartLeasingDate, 
-        mFinishLeasingDate} = req.body;
+        mFinishLeasingDate,
+        mPurchaseDate,
+        mServiceLokalDate,
+        mServiceManufactureDate} = req.body;
 
     try {
         const machine = await Machine.findById(req.params.id);
@@ -106,7 +116,10 @@ export const editMachine = async (req: Request, res: Response) => {
         machine.mComments = mComments || machine.mComments;
         machine.mStartLeasingDate= mStartLeasingDate || machine.mStartLeasingDate;
         machine.mFinishLeasingDate = mFinishLeasingDate || machine.mFinishLeasingDate;
-
+        machine.mPurchaseDate = mPurchaseDate || machine.mPurchaseDate;
+        machine.mServiceLokalDate = mServiceLokalDate || machine.mServiceLokalDate;
+        machine.mServiceManufactureDate = mServiceManufactureDate || machine.mServiceManufactureDate;
+        
         const updatedMachine = await machine.save()
         return res.status(200).json(updatedMachine)
 
