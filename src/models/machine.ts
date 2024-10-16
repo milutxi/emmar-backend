@@ -10,6 +10,8 @@ interface IMachine extends Document {
     mSerialNumber: string;
     mDescription: string;
     mComments: string;
+    mCommentsLokalService: string;
+    mCommentsManufactureService: string;
     mStartLeasingDate: Date;
     mFinishLeasingDate: Date;
     mPurchaseDate: Date;

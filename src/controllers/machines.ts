@@ -10,6 +10,8 @@ export const registerMachine = async (req: Request, res: Response) => {
         mSerialNumber, 
         mDescription, 
         mComments, 
+        mCommentsLokalService,
+        mCommentsManufactureService,
         mStartLeasingDate, 
         mFinishLeasingDate,
         mPurchaseDate,
@@ -28,6 +30,8 @@ if (!mName){
             mSerialNumber, 
             mDescription, 
             mComments, 
+            mCommentsLokalService,
+            mCommentsManufactureService,
             mStartLeasingDate, 
             mFinishLeasingDate,
             mPurchaseDate,
@@ -94,6 +98,8 @@ export const editMachine = async (req: Request, res: Response) => {
         mSerialNumber, 
         mDescription, 
         mComments, 
+        mCommentsLokalService,
+        mCommentsManufactureService,
         mStartLeasingDate, 
         mFinishLeasingDate,
         mPurchaseDate,
@@ -114,6 +120,8 @@ export const editMachine = async (req: Request, res: Response) => {
         machine.mSerialNumber = mSerialNumber || machine.mSerialNumber;
         machine.mDescription = mDescription || machine.mDescription;
         machine.mComments = mComments || machine.mComments;
+        machine.mCommentsLokalService = mCommentsLokalService || machine.mCommentsLokalService;
+        machine.mCommentsManufactureService = mCommentsManufactureService || machine.mCommentsManufactureService;
         machine.mStartLeasingDate= mStartLeasingDate || machine.mStartLeasingDate;
         machine.mFinishLeasingDate = mFinishLeasingDate || machine.mFinishLeasingDate;
         machine.mPurchaseDate = mPurchaseDate || machine.mPurchaseDate;
