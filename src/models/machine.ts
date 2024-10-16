@@ -1,5 +1,7 @@
 import { Document, Schema, model } from "mongoose";
 
+
+
 interface IMachine extends Document {
     mName: string;
     mManufactureCompany: string;
