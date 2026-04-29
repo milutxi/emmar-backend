@@ -7,7 +7,7 @@ import { Document, Schema, Types, model } from "mongoose";
 interface IClient extends Document {
     name: string;
     lastName: string;
-    telephone: number;
+    telephone: string;
     email: string;
     dateOfBirth: Date;
     // diagnoses: Types.ObjectId;
@@ -27,17 +27,18 @@ const ClientSchema = new Schema<IClient>({
         trim: true,
     },
     telephone: {
-        type: Number,
+        type: String,
         required: true,
         trim: true,
     },
     email: {
         type: String,
         trim: true,
+        required: false
     },
     dateOfBirth: {
         type: Date,
-        required: true,
+        required: false,
         trim: true,
     },
     // diagnoses: [{
