@@ -26,21 +26,21 @@ app.post("/diagnos", diagnosController.registerDiagnos);
 app.get("/diagnos", diagnosController.getAllDiagnos);
 app.get("/diagnos/:id", diagnosController.getDiagnos);
 app.delete("/diagnos/:id", diagnosController.deleteDiagnos);
-app.patch("/diagnos/:id", diagnosController.editDiagnos);
+app.put("/diagnos/:id", diagnosController.editDiagnos);
 
 // handlers for treatments
 app.post("/treatment", treatmentController.registerTreatment);
 app.get("/treatment", treatmentController.getAllTreatments);
 app.get("/treatment/:id", treatmentController.getTreatment);
 app.delete("/treatment/:id", treatmentController.deleteTreatment);
-app.patch("/treatment/:id", treatmentController.editTreatment);
+app.put("/treatment/:id", treatmentController.editTreatment);
 
 // handlers for machines
 app.post("/machine", machineController.registerMachine);
 app.get("/machine", machineController.getAllMachines);
 app.get("/machine/:id", machineController.getMachine);
 app.delete("/machine/:id", machineController.deleteMachine);
-app.patch("/machine/:id", machineController.editMachine);
+app.put("/machine/:id", machineController.editMachine);
 
 app.get("/", (req, res) => {
   res.json({ message: "welcome to the app" });
