@@ -19,7 +19,7 @@ app.post("/clients", clientController.registerClient);
 app.get("/clients", clientController.getAllClients);
 app.get("/clients/:id", clientController.getClient);
 app.delete("/clients/:id", clientController.deleteClient);
-app.patch("/clients/:id", clientController.editClient);
+app.put("/clients/:id", clientController.editClient);
 
 // handlers for diagnos
 app.post("/diagnos", diagnosController.registerDiagnos);
@@ -41,8 +41,6 @@ app.get("/machine", machineController.getAllMachines);
 app.get("/machine/:id", machineController.getMachine);
 app.delete("/machine/:id", machineController.deleteMachine);
 app.patch("/machine/:id", machineController.editMachine);
-
-
 
 app.get("/", (req, res) => {
   res.json({ message: "welcome to the app" });
