@@ -51,6 +51,14 @@ const MachineSchema = new Schema<IMachine>({
         type: String,
         trim: true,
     },
+    mCommentsLokalService: {
+        type: String,
+        trim: true,
+    },
+    mCommentsManufactureService: {
+        type: String,
+        trim: true,
+    },
     mStartLeasingDate: {
         type: Date,
         trim: true,
