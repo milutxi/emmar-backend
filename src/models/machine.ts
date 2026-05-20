@@ -17,6 +17,8 @@ interface IMachine extends Document {
     mPurchaseDate: Date;
     mServiceLokalDate: Date;
     mServiceManufactureDate: Date;
+    mServiceLokalNextDate: Date;
+    mServiceManufactureNextDate: Date;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -78,7 +80,15 @@ const MachineSchema = new Schema<IMachine>({
     mServiceManufactureDate: {
         type: Date,
         trim: true,
-    } 
+    },
+    mServiceLokalNextDate: {
+        type: Date,
+        trim: true,
+    }, 
+    mServiceManufactureNextDate: {
+        type: Date,
+        trim: true,
+    }  
 }, {
     timestamps: true
 });

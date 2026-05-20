@@ -20,6 +20,8 @@ export const registerMachine = async (req: Request, res: Response) => {
     mPurchaseDate,
     mServiceLokalDate,
     mServiceManufactureDate,
+    mServiceLokalNextDate,
+    mServiceManufactureNextDate,
   } = req.body;
 
   if (!mName || mName.trim() === "") {
@@ -42,6 +44,8 @@ export const registerMachine = async (req: Request, res: Response) => {
       mPurchaseDate,
       mServiceLokalDate,
       mServiceManufactureDate,
+      mServiceLokalNextDate,
+      mServiceManufactureNextDate,
     });
 
     const savedMachine = await machine.save();
@@ -151,6 +155,8 @@ export const editMachine = async (req: Request, res: Response) => {
       "mPurchaseDate",
       "mServiceLokalDate",
       "mServiceManufactureDate",
+      "mServiceLokalNextDate",
+      "mServiceManufactureNextDate",
     ] as const;
 
     allowedFields.forEach((field) => {
