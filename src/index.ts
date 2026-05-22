@@ -40,7 +40,7 @@ app.post("/machine", machineController.registerMachine);
 app.get("/machine", machineController.getAllMachines);
 app.get("/machine/:id", machineController.getMachine);
 app.delete("/machine/:id", machineController.deleteMachine);
-app.put("/machine/:id", machineController.editMachine);
+app.patch("/machine/:id", machineController.editMachine);
 
 app.get("/", (req, res) => {
   res.json({ message: "welcome to the app" });

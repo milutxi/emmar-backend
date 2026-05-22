@@ -127,19 +127,62 @@ export const deleteMachine = async (req: Request, res: Response) => {
 /**
  * EDIT MACHINE (CLEAN & SAFE VERSION)
  */
+// export const editMachine = async (req: Request, res: Response) => {
+//   const { id } = req.params;
+
+//   try {
+//     const machine = await Machine.findById(id);
+
+//     if (!machine) {
+//       return res
+//         .status(404)
+//         .json({ message: "No machine found with id: " + id });
+//     }
+
+//     // whitelist of allowed fields (prevents accidental/malicious updates)
+//     const allowedFields = [
+//       "mName",
+//       "mManufactureCompany",
+//       "mManufactureYear",
+//       "mModelNumber",
+//       "mSerialNumber",
+//       "mDescription",
+//       "mComments",
+//       "mCommentsLokalService",
+//       "mCommentsManufactureService",
+//       "mStartLeasingDate",
+//       "mFinishLeasingDate",
+//       "mPurchaseDate",
+//       "mServiceLokalDate",
+//       "mServiceManufactureDate",
+//       "mServiceLokalNextDate",
+//       "mServiceManufactureNextDate",
+//     ] as const;
+
+//     allowedFields.forEach((field) => {
+//       const value = req.body[field];
+
+//       if (value !== undefined) {
+//         // @ts-ignore (safe because we control fields)
+//         machine[field] = value;
+//       }
+//     });
+
+//     const updatedMachine = await machine.save();
+
+//     return res.status(200).json(updatedMachine);
+//   } catch (error: any) {
+//     return res.status(500).json({
+//       message: "Internal Server Error",
+//       error: error.message,
+//     });
+//   }
+// };
+
 export const editMachine = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const machine = await Machine.findById(id);
-
-    if (!machine) {
-      return res
-        .status(404)
-        .json({ message: "No machine found with id: " + id });
-    }
-
-    // whitelist of allowed fields (prevents accidental/malicious updates)
     const allowedFields = [
       "mName",
       "mManufactureCompany",
@@ -159,16 +202,28 @@ export const editMachine = async (req: Request, res: Response) => {
       "mServiceManufactureNextDate",
     ] as const;
 
-    allowedFields.forEach((field) => {
-      const value = req.body[field];
+    const update: Record<string, any> = {};
 
-      if (value !== undefined) {
-        // @ts-ignore (safe because we control fields)
-        machine[field] = value;
+    for (const field of allowedFields) {
+      if (req.body[field] !== undefined) {
+        update[field] = req.body[field];
       }
-    });
+    }
 
-    const updatedMachine = await machine.save();
+    const updatedMachine = await Machine.findByIdAndUpdate(
+      id,
+      { $set: update },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    if (!updatedMachine) {
+      return res.status(404).json({
+        message: "No machine found with id: " + id,
+      });
+    }
 
     return res.status(200).json(updatedMachine);
   } catch (error: any) {
