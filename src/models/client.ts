@@ -10,7 +10,9 @@ interface IClient extends Document {
     telephone: string;
     email: string;
     dateOfBirth: Date;
-    // diagnoses: Types.ObjectId;
+
+   
+    
     createdAt: Date;
     updatedAt: Date;
 }
@@ -41,18 +43,7 @@ const ClientSchema = new Schema<IClient>({
         required: false,
         trim: true,
     },
-    // diagnoses: [{
-    //     diagnos: {
-    //         type: Types.ObjectId, 
-    //         ref: 'Diagnos',
-    //         required: true,
-    //     },
-    //     comment: {
-    //         type: String,
-    //         required: false,
-    //         trim: true,
-    //     }
-    // }],
+   
 }, {
     timestamps: true
 });
