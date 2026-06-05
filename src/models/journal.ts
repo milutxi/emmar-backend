@@ -6,6 +6,8 @@ interface IJournal extends Document {
   machineId?: Types.ObjectId;
   laserSettingsId: Types.ObjectId;
   diagnosisFormId?: Types.ObjectId;
+  medicalHistoryId: Types.ObjectId;
+  consentFormId: Types.ObjectId;
 
   jDate: Date;
 
@@ -60,6 +62,16 @@ const JournalSchema = new Schema<IJournal>(
       type: Schema.Types.ObjectId,
       ref: "DiagnosisForm",
     },
+    medicalHistoryId: {
+        type: Schema.Types.ObjectId,
+        ref: "MedicalHistory",
+        required: true,
+    },
+    consentFormId: {
+        type: Schema.Types.ObjectId,
+        ref: "ConsentForm",
+        required: true,
+    },
     jDate: {
       type: Date,
       required: true,
@@ -70,11 +82,16 @@ const JournalSchema = new Schema<IJournal>(
     seriesTotal: {
       type: Number,
     },
+    price: {
+      type: Number,
+      required: true,
+    },
     discount: {
       type: Number,
     },
     totalPrice: {
       type: Number,
+      required: true,
     },
     area: {
       type: String,
@@ -114,7 +131,7 @@ const JournalSchema = new Schema<IJournal>(
     ],
     performedBy: {
       type: Schema.Types.ObjectId,
-      ref: "Staff",
+      ref: "User",
       required: true,
     },
     signedAt: {

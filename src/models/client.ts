@@ -10,8 +10,6 @@ interface IClient extends Document {
     telephone: string;
     email: string;
     dateOfBirth: Date;
-
-   
     
     createdAt: Date;
     updatedAt: Date;

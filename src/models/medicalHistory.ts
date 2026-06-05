@@ -31,12 +31,12 @@ interface IMedicalHistory extends Document {
   bloodThinnerDetails?: string;
   hypertrophicScarring?: boolean;
   hypertrophicScarringDetails?: string;
-
   otherConditions?: string;
   mhnotes?: string;
   consentAccepted?: boolean;
   signedAt?: Date;
   signatureImage?: string;
+  
   createdAt: Date;
   updatedAt: Date;
 }
