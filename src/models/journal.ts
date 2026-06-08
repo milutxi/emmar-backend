@@ -2,8 +2,8 @@ import { Document, Schema, model, Types } from "mongoose";
 
 interface IJournal extends Document {
   clientId: Types.ObjectId;
-  treatmentId: Types.ObjectId;
-  machineId?: Types.ObjectId;
+  treatmentId: Types.ObjectId[];
+  machineId?: Types.ObjectId[];
   laserSettingsId: Types.ObjectId;
   diagnosisFormId?: Types.ObjectId;
   medicalHistoryId: Types.ObjectId;
@@ -45,15 +45,19 @@ const JournalSchema = new Schema<IJournal>(
       ref: "Client",
       required: true,
     },
-    treatmentId: {
-      type: Schema.Types.ObjectId,
-      ref: "Treatment",
-      required: true,
-    },
-    machineId: {
-      type: Schema.Types.ObjectId,
-      ref: "Machine",
-    },
+    treatmentId: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Treatment",
+        required: true,
+      },
+    ],
+    machineId: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Machine",
+      },
+    ],
     laserSettingsId: {
       type: Schema.Types.ObjectId,
       ref: "LaserSettings",
@@ -63,14 +67,14 @@ const JournalSchema = new Schema<IJournal>(
       ref: "DiagnosisForm",
     },
     medicalHistoryId: {
-        type: Schema.Types.ObjectId,
-        ref: "MedicalHistory",
-        required: true,
+      type: Schema.Types.ObjectId,
+      ref: "MedicalHistory",
+      required: true,
     },
     consentFormId: {
-        type: Schema.Types.ObjectId,
-        ref: "ConsentForm",
-        required: true,
+      type: Schema.Types.ObjectId,
+      ref: "ConsentForm",
+      required: true,
     },
     jDate: {
       type: Date,
