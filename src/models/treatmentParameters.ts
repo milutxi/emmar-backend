@@ -54,8 +54,8 @@ const TreatmentParametersSchema = new Schema<ITreatmentParameters>(
 );
 
 const TreatmentParameters = model<ITreatmentParameters>(
-  "LaserSettings",
- TreatmentParametersSchema,
+  "TreatmentParameters",
+  TreatmentParametersSchema,
 );
 
 export default TreatmentParameters;
