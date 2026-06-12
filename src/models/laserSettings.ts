@@ -1,6 +1,6 @@
 import { Document, Schema, model } from "mongoose";
 
-interface ILaserSettings extends Document {
+interface ITreatmentParameters extends Document {
   wavelength?: string; // våglängd
   pulseMode?: string; // skottläge
   energyDensity?: number; // energitäthet
@@ -9,13 +9,13 @@ interface ILaserSettings extends Document {
   frequency?: number; // Hz
   pulseDuration?: number; // ms
   coolingUsed?: boolean;
-  laserComment?: string;
+  tpComment?: string;
 
   createdAt: Date;
   updatedAt: Date;
 }
 
-const LaserSettingsSchema = new Schema<ILaserSettings>(
+const TreatmentParametersSchema = new Schema<ITreatmentParameters>(
   {
     wavelength: {
       type: String,
@@ -43,7 +43,7 @@ const LaserSettingsSchema = new Schema<ILaserSettings>(
     coolingUsed: {
       type: Boolean,
     },
-    laserComment: {
+    tpComment: {
       type: String,
       trim: true,
     },
@@ -53,9 +53,9 @@ const LaserSettingsSchema = new Schema<ILaserSettings>(
   },
 );
 
-const LaserSettings = model<ILaserSettings>(
+const TreatmentParameters = model<ITreatmentParameters>(
   "LaserSettings",
-  LaserSettingsSchema,
+ TreatmentParametersSchema,
 );
 
-export default LaserSettings;
+export default TreatmentParameters;

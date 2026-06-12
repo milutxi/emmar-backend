@@ -4,7 +4,7 @@ interface IJournal extends Document {
   clientId: Types.ObjectId;
   treatmentId: Types.ObjectId[];
   machineId?: Types.ObjectId[];
-  laserSettingsId: Types.ObjectId;
+  treatmentParametersId: Types.ObjectId;
   diagnosisFormId?: Types.ObjectId;
   medicalHistoryId: Types.ObjectId;
   consentFormId: Types.ObjectId;
@@ -58,9 +58,9 @@ const JournalSchema = new Schema<IJournal>(
         ref: "Machine",
       },
     ],
-    laserSettingsId: {
+    treatmentParametersId: {
       type: Schema.Types.ObjectId,
-      ref: "LaserSettings",
+      ref: "TreatmentParameters",
     },
     diagnosisFormId: {
       type: Schema.Types.ObjectId,
