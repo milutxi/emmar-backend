@@ -3,11 +3,11 @@ import { Document, Schema, model } from "mongoose";
 interface ITreatmentParameters extends Document {
   wavelength?: string; // våglängd
   pulseMode?: string; // skottläge
-  energyDensity?: number; // energitäthet
-  pulseEnergy?: number; // mJ
-  spotSize?: number; // mm
-  frequency?: number; // Hz
-  pulseDuration?: number; // ms
+  energyDensity?: string; // energitäthet
+  pulseEnergy?: string; // mJ
+  spotSize?: string; // mm
+  frequency?: string; // Hz
+  pulseDuration?: string; // ms
   coolingUsed?: boolean;
   tpComment?: string;
 
@@ -26,19 +26,24 @@ const TreatmentParametersSchema = new Schema<ITreatmentParameters>(
       trim: true,
     },
     energyDensity: {
-      type: Number,
+      type: String,
+      trim: true,
     },
     pulseEnergy: {
-      type: Number,
+      type: String,
+      trim: true,
     },
     spotSize: {
-      type: Number,
+      type: String,
+      trim: true,
     },
     frequency: {
-      type: Number,
+      type: String,
+      trim: true,
     },
     pulseDuration: {
-      type: Number,
+      type: String,
+      trim: true,
     },
     coolingUsed: {
       type: Boolean,
