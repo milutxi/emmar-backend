@@ -1,26 +1,18 @@
 import { Document, Schema, model, Types } from "mongoose";
+import { ITreatmentSession, TreatmentSessionSchema } from "./treatmentSession";
 
 interface IJournal extends Document {
   clientId: Types.ObjectId;
-  treatmentId: Types.ObjectId[];
-  machineId?: Types.ObjectId[];
-  treatmentParametersId: Types.ObjectId;
-  diagnosisFormId?: Types.ObjectId;
+  
+  treatments: ITreatmentSession[];
+
   medicalHistoryId: Types.ObjectId;
   consentFormId: Types.ObjectId;
 
   jDate: Date;
 
-  seriesNumber?: number;
-  seriesTotal?: number;
-
-  price: number;
-  discount?: number;
-  totalPrice: number;
-
   area?: string;
   fitzpatrickType?: number;
-  notes?: string;
 
   medicalHistoryReviewed: boolean;
   consentConfirmed: boolean;
@@ -45,27 +37,9 @@ const JournalSchema = new Schema<IJournal>(
       ref: "Client",
       required: true,
     },
-    treatmentId: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Treatment",
-        required: true,
-      },
-    ],
-    machineId: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Machine",
-      },
-    ],
-    treatmentParametersId: {
-      type: Schema.Types.ObjectId,
-      ref: "TreatmentParameters",
-    },
-    diagnosisFormId: {
-      type: Schema.Types.ObjectId,
-      ref: "DiagnosisForm",
-    },
+
+    treatments: [TreatmentSessionSchema],
+
     medicalHistoryId: {
       type: Schema.Types.ObjectId,
       ref: "MedicalHistory",
@@ -80,23 +54,7 @@ const JournalSchema = new Schema<IJournal>(
       type: Date,
       required: true,
     },
-    seriesNumber: {
-      type: Number,
-    },
-    seriesTotal: {
-      type: Number,
-    },
-    price: {
-      type: Number,
-      required: true,
-    },
-    discount: {
-      type: Number,
-    },
-    totalPrice: {
-      type: Number,
-      required: true,
-    },
+    
     area: {
       type: String,
       trim: true,
@@ -105,10 +63,6 @@ const JournalSchema = new Schema<IJournal>(
       type: Number,
       min: 1,
       max: 6,
-    },
-    notes: {
-      type: String,
-      trim: true,
     },
     medicalHistoryReviewed: {
       type: Boolean,
