@@ -7,6 +7,8 @@ import * as diagnosController from "./controllers/diagnos";
 import * as treatmentController from "./controllers/treatments";
 import * as machineController from "./controllers/machines";
 
+import { createJournal } from "./controllers/journal";
+
 const app = express();
 
 //middleware
@@ -41,6 +43,9 @@ app.get("/machine", machineController.getAllMachines);
 app.get("/machine/:id", machineController.getMachine);
 app.delete("/machine/:id", machineController.deleteMachine);
 app.patch("/machine/:id", machineController.editMachine);
+
+// handlers for journal
+app.post("/createJournal", createJournal);
 
 app.get("/", (req, res) => {
   res.json({ message: "welcome to the app" });
