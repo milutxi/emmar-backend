@@ -2,7 +2,7 @@ import { Document, Schema, model, Types } from "mongoose";
 
 interface IConsentForm extends Document {
   clientId: Types.ObjectId;
-  treatmentId: Types.ObjectId;
+   treatmentIds: Types.ObjectId[];
   consentText: string;
   accepted: boolean;
   signatureImage: string;
@@ -19,11 +19,13 @@ const ConsentFormSchema = new Schema<IConsentForm>(
       ref: "Client",
       required: true,
     },
-    treatmentId: {
+    treatmentIds: [
+      {
       type: Schema.Types.ObjectId,
       ref: "Treatment",
       required: true,
-    },
+      },
+    ],
     consentText: {
       type: String,
       trim: true,

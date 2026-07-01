@@ -7,18 +7,18 @@ interface IMachine extends Document {
   mModelNumber: string;
   mSerialNumber: string;
   mDescription: string;
-  mComments: string;
-  mCommentsLokalService: string;
-  mCommentsManufactureService: string;
+  acquisitionType: string;
   mStartLeasingDate: Date;
   mFinishLeasingDate: Date;
   mPurchaseDate: Date;
   mServiceLokalDate: Date;
-  mServiceManufactureDate: Date;
   mServiceLokalNextDate: Date;
+  mCommentsLokalService: string;
+  mServiceManufactureDate: Date;
   mServiceManufactureNextDate: Date;
+  mCommentsManufactureService: string;
+  mComments: string;
   requiresTreatmentParameters: boolean;
-  acquisitionType: string;
   createdAt: Date;
   updatedAt: Date;
 }
