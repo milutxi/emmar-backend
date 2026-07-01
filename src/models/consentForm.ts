@@ -1,6 +1,6 @@
 import { Document, Schema, model, Types } from "mongoose";
 
-interface IConsentForm extends Document {
+export interface IConsentForm extends Document {
   clientId: Types.ObjectId;
    treatmentIds: Types.ObjectId[];
   consentText: string;
