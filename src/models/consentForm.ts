@@ -28,22 +28,26 @@ const ConsentFormSchema = new Schema<IConsentForm>(
     ],
     consentText: {
       type: String,
+      required: true,
       trim: true,
     },
     accepted: {
       type: Boolean,
+      required: true,
     },
     signatureImage: {
       type: String,
+      required: true,
       trim: true,
     },
     signedAt: {
       type: Date,
+      required: true,
     }
   }, {
     timestamps: true,
   });
 
-  const ConsentForm = model<IConsentForm>('ConstentForm', ConsentFormSchema);
+  const ConsentForm = model<IConsentForm>('ConsentForm', ConsentFormSchema);
 
   export default ConsentForm;
