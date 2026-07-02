@@ -6,6 +6,7 @@ import * as clientController from "./controllers/clients";
 import * as diagnosController from "./controllers/diagnos";
 import * as treatmentController from "./controllers/treatments";
 import * as machineController from "./controllers/machines";
+import * as consentFormController from "./controllers/consentForm";
 
 import { createJournal } from "./controllers/journal";
 
@@ -46,6 +47,10 @@ app.patch("/machine/:id", machineController.editMachine);
 
 // handlers for journal
 app.post("/createJournal", createJournal);
+
+// handlers for consentForm
+app.post("/consentForm", consentFormController.createConsentForm);
+app.get("/consentForm", consentFormController.getAllConsentForms);
 
 app.get("/", (req, res) => {
   res.json({ message: "welcome to the app" });
