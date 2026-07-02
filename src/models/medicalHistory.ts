@@ -2,6 +2,8 @@ import { Document, Schema, model, Types } from "mongoose";
 
 interface IMedicalHistory extends Document {
   clientId: Types.ObjectId;
+  version: number;
+  isLatest: boolean;
   pregnant?: boolean;
   breastfeeding?: boolean;
   diabetic?: boolean;
@@ -33,10 +35,10 @@ interface IMedicalHistory extends Document {
   hypertrophicScarringDetails?: string;
   otherConditions?: string;
   mhnotes?: string;
-  consentAccepted?: boolean;
+  medicalHistoryAccepted?: boolean;
   signedAt?: Date;
   signatureImage?: string;
-  
+
   createdAt: Date;
   updatedAt: Date;
 }
@@ -47,6 +49,14 @@ const MedicalHistorySchema = new Schema<IMedicalHistory>(
       type: Schema.Types.ObjectId,
       ref: "Client",
       required: true,
+    },
+    version: {
+      type: Number,
+      required: true,
+    },
+    isLatest: {
+      type: Boolean,
+      default: true,
     },
     pregnant: {
       type: Boolean,
@@ -149,10 +159,10 @@ const MedicalHistorySchema = new Schema<IMedicalHistory>(
       type: String,
       trim: true,
     },
-    consentAccepted: {
+    medicalHistoryAccepted: {
       type: Boolean,
       default: false,
-    }, 
+    },
     signedAt: {
       type: Date,
     },

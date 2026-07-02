@@ -7,6 +7,7 @@ import * as diagnosController from "./controllers/diagnos";
 import * as treatmentController from "./controllers/treatments";
 import * as machineController from "./controllers/machines";
 import * as consentFormController from "./controllers/consentForm";
+import * as medicalHistoryController from "./controllers/medicalHistory";
 
 import { createJournal } from "./controllers/journal";
 
@@ -51,6 +52,14 @@ app.post("/createJournal", createJournal);
 // handlers for consentForm
 app.post("/consentForm", consentFormController.createConsentForm);
 app.get("/consentForm", consentFormController.getAllConsentForms);
+
+// handlers for medicalHistory
+app.post("/medicalHistory", medicalHistoryController.createMedicalHistory);
+
+app.get(
+  "/medicalHistory/latest/:clientId",
+  medicalHistoryController.getLatestMedicalHistory,
+);
 
 app.get("/", (req, res) => {
   res.json({ message: "welcome to the app" });
