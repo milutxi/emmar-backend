@@ -2,53 +2,79 @@ import { Request, Response } from "express";
 import MedicalHistory from "../models/medicalHistory";
 
 export const createMedicalHistory = async (req: Request, res: Response) => {
-  try{
+  try {
+    const {
+      _id,
+      id,
+      version: incomingVersion,
+      isLatest: incomingIsLatest,
+      createdAt,
+      updatedAt,
+      __v,
+      clientId,
+      ...medicalHistoryData
+    } = req.body;
 
-   const { clientId } = req.body;
+    if (!clientId) {
+      return res.status(400).json({
+        message: "clientId is required",
+      });
+    }
 
     // 1. Find latest medical history
 
     const latestMedicalHistory = await MedicalHistory.findOne({
       clientId,
       isLatest: true,
-    }).sort({ version: -1});
+    }).sort({ version: -1 });
 
     // 2. Calculate the new version number
-    let version = 1;
 
-    if(latestMedicalHistory) {
-      version = latestMedicalHistory.version + 1;
-    }
-    
-   
+    const nextVersion = latestMedicalHistory
+      ? latestMedicalHistory.version + 1
+      : 1;
+
+    // if (latestMedicalHistory) {
+    //   version = (latestMedicalHistory.version ?? 0) + 1;
+
+    //   latestMedicalHistory.isLatest = false;
+    //   await latestMedicalHistory.save();
+    // }
+
     // 3. Create new version
-    
+
     const savedMedicalHistory = await MedicalHistory.create({
-      ...req.body,
-      version,
+      ...medicalHistoryData,
+      clientId,
+      version: nextVersion,
       isLatest: true,
     });
 
+    await MedicalHistory.updateMany(
+      {
+        clientId,
+        _id: { $ne: savedMedicalHistory._id },
+      },
+      {
+        $set: { isLatest: false },
+      },
+    );
+
     // 4. Return it
-    
+
     return res.status(201).json(savedMedicalHistory);
+  } catch (error: any) {
+    console.error("Create medical history error:", error);
 
-
-
-
-
-
-
-
-  }catch(error:any){
-    return res.status(500).json({message: 'Internal Server Error', error: error.message});
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
   }
-}
-
+};
 
 export const getLatestMedicalHistory = async (req: Request, res: Response) => {
-  try{
-    const { clientId } = req.params; 
+  try {
+    const { clientId } = req.params;
 
     const medicalHistory = await MedicalHistory.findOne({
       clientId,
@@ -56,12 +82,10 @@ export const getLatestMedicalHistory = async (req: Request, res: Response) => {
     });
 
     return res.status(200).json(medicalHistory);
-
-    }catch(error:any) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: error.message,
-      });
-
+  } catch (error: any) {
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
   }
 };
