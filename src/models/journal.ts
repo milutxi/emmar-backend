@@ -90,7 +90,7 @@ const JournalSchema = new Schema<IJournal>(
     performedBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+     // need to change to required true
     },
     signedAt: {
       type: Date,
