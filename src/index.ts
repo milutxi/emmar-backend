@@ -61,6 +61,10 @@ app.get(
   medicalHistoryController.getLatestMedicalHistory,
 );
 
+app.get("/medicalHistory/client/:clientId", 
+  medicalHistoryController.getMedicalHistoriesByClient,
+);
+
 app.get("/", (req, res) => {
   res.json({ message: "welcome to the app" });
 });

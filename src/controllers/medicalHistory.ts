@@ -79,10 +79,29 @@ export const getLatestMedicalHistory = async (req: Request, res: Response) => {
     const medicalHistory = await MedicalHistory.findOne({
       clientId,
       isLatest: true,
-    });
+    }).sort({ version: -1});
 
     return res.status(200).json(medicalHistory);
   } catch (error: any) {
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
+export const getMedicalHistoriesByClient = async ( req: Request, res: Response,
+) => {
+  try{
+    const { clientId } = req.params;
+    
+    const medicalHistories = await MedicalHistory.find({
+      clientId,
+    }).sort({ version: -1});
+
+    return res.status(200).json(medicalHistories);
+
+  }catch(error:any) {
     return res.status(500).json({
       message: "Internal Server Error",
       error: error.message,
