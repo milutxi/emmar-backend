@@ -8,8 +8,7 @@ import * as treatmentController from "./controllers/treatments";
 import * as machineController from "./controllers/machines";
 import * as consentFormController from "./controllers/consentForm";
 import * as medicalHistoryController from "./controllers/medicalHistory";
-
-import { createJournal } from "./controllers/journal";
+import * as journalController from "./controllers/journal";
 
 const app = express();
 
@@ -47,7 +46,8 @@ app.delete("/machine/:id", machineController.deleteMachine);
 app.patch("/machine/:id", machineController.editMachine);
 
 // handlers for journal
-app.post("/createJournal", createJournal);
+app.post("/createJournal", journalController.createJournal);
+app.get("/journals/client/:clientId", journalController.getJournalsByClient);
 
 // handlers for consentForm
 app.post("/consentForm", consentFormController.createConsentForm);
@@ -55,15 +55,13 @@ app.get("/consentForm", consentFormController.getAllConsentForms);
 
 // handlers for medicalHistory
 app.post("/medicalHistory", medicalHistoryController.createMedicalHistory);
-
-app.get(
-  "/medicalHistory/latest/:clientId",
-  medicalHistoryController.getLatestMedicalHistory,
-);
+app.get("/medicalHistory/latest/:clientId", medicalHistoryController.getLatestMedicalHistory);
 
 app.get("/medicalHistory/client/:clientId", 
   medicalHistoryController.getMedicalHistoriesByClient,
 );
+
+
 
 app.get("/", (req, res) => {
   res.json({ message: "welcome to the app" });

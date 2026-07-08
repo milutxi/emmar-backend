@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import TreatmentParameters from "../models/treatmentParameters";
 import Journal from "../models/journal";
+
 export const createJournal = async (req: Request, res: Response) => {
   //console.log(req.body);
   try {
@@ -15,11 +16,6 @@ export const createJournal = async (req: Request, res: Response) => {
         delete session.treatmentParameters;
       }
     }
-
-    // console.log(treatments);
-    // res.status(200).json({
-    //   message: "Received",
-    // });
 
     const journal = await Journal.create({
       clientId: req.body.clientId,
@@ -39,6 +35,28 @@ export const createJournal = async (req: Request, res: Response) => {
 
     return res.status(500).json({
       message: "Could not create journal",
+      error: error.message,
+    });
+  }
+};
+
+export const getJournalsByClient = async (req: Request, res: Response) => {
+  try {
+    const { clientId } = req.params;
+
+    const journals = await Journal.find({ clientId })
+      .sort({ jDate: -1, createdAt: -1 })
+      .populate("treatments.treatmentId")
+      .populate("treatments.machineIds")
+      .populate("medicalHistoryId")
+      .populate("consentFormId");
+
+    return res.status(200).json(journals);
+  } catch (error: any) {
+    console.error("Get journals by client error:", error);
+
+    return res.status(500).json({
+      message: "Could not get treatment sessions for client",
       error: error.message,
     });
   }
