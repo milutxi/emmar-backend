@@ -48,6 +48,7 @@ export const getJournalsByClient = async (req: Request, res: Response) => {
       .sort({ jDate: -1, createdAt: -1 })
       .populate("treatments.treatmentId")
       .populate("treatments.machineIds")
+      .populate("treatments.treatmentParametersId")
       .populate("medicalHistoryId")
       .populate("consentFormId");
 
