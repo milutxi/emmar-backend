@@ -43,12 +43,10 @@ const JournalSchema = new Schema<IJournal>(
     medicalHistoryId: {
       type: Schema.Types.ObjectId,
       ref: "MedicalHistory",
-      required: true,
     },
     consentFormId: {
       type: Schema.Types.ObjectId,
       ref: "ConsentForm",
-      required: true,
     },
     jDate: {
       type: Date,

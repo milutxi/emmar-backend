@@ -21,10 +21,13 @@ export const createJournal = async (req: Request, res: Response) => {
       clientId: req.body.clientId,
       jDate: req.body.jDate,
       treatments,
-      medicalHistoryId: req.body.medicalHistoryId,
-      consentFormId: req.body.consentFormId,
-      medicalHistoryReviewed: true,
-      consentConfirmed: true,
+
+      medicalHistoryId: req.body.medicalHistoryId || undefined,
+      consentFormId: req.body.consentFormId || undefined,
+
+      medicalHistoryReviewed: Boolean(req.body.medicalHistoryId),
+      consentConfirmed: Boolean(req.body.consentFormId),
+
       changesReported: false,
       signedAt: new Date(),
     });
