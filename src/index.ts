@@ -48,6 +48,7 @@ app.patch("/machine/:id", machineController.editMachine);
 // handlers for journal
 app.post("/createJournal", journalController.createJournal);
 app.get("/journals/client/:clientId", journalController.getJournalsByClient);
+app.patch("/journals/:journalId", journalController.updateJournal);
 
 // handlers for consentForm
 app.post("/consentForm", consentFormController.createConsentForm);

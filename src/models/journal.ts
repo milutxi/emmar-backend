@@ -2,14 +2,13 @@ import { Document, Schema, model, Types } from "mongoose";
 import { ITreatmentSession, TreatmentSessionSchema } from "./treatmentSession";
 
 interface IJournal extends Document {
+  jDate: Date;
   clientId: Types.ObjectId;
-  
+
   treatments: ITreatmentSession[];
 
   medicalHistoryId: Types.ObjectId;
   consentFormId: Types.ObjectId;
-
-  jDate: Date;
 
   area?: string;
   fitzpatrickType?: number;
@@ -32,6 +31,10 @@ interface IJournal extends Document {
 
 const JournalSchema = new Schema<IJournal>(
   {
+    jDate: {
+      type: Date,
+      required: true,
+    },
     clientId: {
       type: Schema.Types.ObjectId,
       ref: "Client",
@@ -48,11 +51,7 @@ const JournalSchema = new Schema<IJournal>(
       type: Schema.Types.ObjectId,
       ref: "ConsentForm",
     },
-    jDate: {
-      type: Date,
-      required: true,
-    },
-    
+
     area: {
       type: String,
       trim: true,
@@ -88,7 +87,7 @@ const JournalSchema = new Schema<IJournal>(
     performedBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
-     // need to change to required true
+      // need to change to required true
     },
     signedAt: {
       type: Date,
