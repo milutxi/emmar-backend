@@ -24,7 +24,7 @@ app.get("/clients/:id", clientController.getClient);
 app.delete("/clients/:id", clientController.deleteClient);
 app.put("/clients/:id", clientController.editClient);
 
-// handlers for diagnos
+// handlers for diagnos - obsolet - not use
 app.post("/diagnos", diagnosController.registerDiagnos);
 app.get("/diagnos", diagnosController.getAllDiagnos);
 app.get("/diagnos/:id", diagnosController.getDiagnos);
@@ -57,10 +57,13 @@ app.get("/consentForm", consentFormController.getAllConsentForms);
 // handlers for medicalHistory
 app.post("/medicalHistory", medicalHistoryController.createMedicalHistory);
 app.get("/medicalHistory/latest/:clientId", medicalHistoryController.getLatestMedicalHistory);
-
 app.get("/medicalHistory/client/:clientId", 
   medicalHistoryController.getMedicalHistoriesByClient,
 );
+
+//handlers for global journals
+app.get("/journals", journalController.getAllJournals);
+
 
 
 

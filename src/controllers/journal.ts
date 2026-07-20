@@ -66,6 +66,28 @@ export const getJournalsByClient = async (req: Request, res: Response) => {
   }
 };
 
+export const getAllJournals = async (req: Request, res: Response) => {
+  try{
+    const journals = await Journal.find()
+      .sort({ jDate: -1, createdAt: -1 })
+      .populate("clientId")
+      .populate("treatments.treatmentId")
+      .populate("treatments.machineIds")
+      .populate("treatments.treatmentParametersId")
+      .populate("medicalHistoryId")
+      .populate("consentFormId");
+
+      return res.status(200).json(journals);
+  }catch (error:any) {
+    console.error("Get all journals error:", error);
+
+    return res.status(500).json({
+      message: "Could not get journals",
+      error: error.message,
+    });
+  }
+};
+
 export const updateJournal = async (req: Request, res: Response) => {
   try {
     const { journalId } = req.params;
