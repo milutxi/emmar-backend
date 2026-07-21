@@ -1,27 +1,69 @@
 import { Document, Schema, model } from "mongoose";
 
-interface IMachine extends Document {
+export interface IMachineSetupNode {
+  label: string;
+  children?: IMachineSetupNode[];
+}
+
+export interface IMachineParameterDefinition {
+  label: string;
+  unit?: string;
+}
+export interface IMachine extends Document {
   mName: string;
   mManufactureCompany: string;
   mManufactureYear: Date;
   mModelNumber: string;
   mSerialNumber: string;
   mDescription: string;
+
   acquisitionType: string;
   mStartLeasingDate: Date;
   mFinishLeasingDate: Date;
   mPurchaseDate: Date;
+
   mServiceLokalDate: Date;
   mServiceLokalNextDate: Date;
   mCommentsLokalService: string;
+
   mServiceManufactureDate: Date;
   mServiceManufactureNextDate: Date;
   mCommentsManufactureService: string;
+
   mComments: string;
   requiresTreatmentParameters: boolean;
+
+  setupMenu: IMachineSetupNode[];
+  parameterDefinitions: IMachineParameterDefinition[];
+
   createdAt: Date;
   updatedAt: Date;
 }
+
+const MachineSetupNodeSchema = new Schema({
+  label: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+});
+
+MachineSetupNodeSchema.add({
+  children: [MachineSetupNodeSchema],
+});
+
+const MachineParameterDefinitionSchema = new Schema({
+  label: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  unit: {
+    type: String,
+    trim: true,
+    default: "",
+  },
+});
 
 const MachineSchema = new Schema<IMachine>(
   {
@@ -99,6 +141,14 @@ const MachineSchema = new Schema<IMachine>(
       type: String,
       enum: ["leasing", "purchase"],
       required: true,
+    },
+    setupMenu: {
+      type: [MachineSetupNodeSchema],
+      default: [],
+    },
+    parameterDefinitions: {
+      type: [MachineParameterDefinitionSchema],
+      default: [],
     },
   },
   {

@@ -24,6 +24,8 @@ export const registerMachine = async (req: Request, res: Response) => {
     mServiceManufactureNextDate,
     requiresTreatmentParameters,
     acquisitionType,
+    setupMenu,
+    parameterDefinitions,
   } = req.body;
 
   if (!mName || mName.trim() === "") {
@@ -50,6 +52,8 @@ export const registerMachine = async (req: Request, res: Response) => {
       mServiceManufactureNextDate,
       requiresTreatmentParameters,
       acquisitionType,
+      setupMenu,
+      parameterDefinitions
     });
 
     const savedMachine = await machine.save();
@@ -206,6 +210,8 @@ export const editMachine = async (req: Request, res: Response) => {
       "mServiceManufactureNextDate",
       "requiresTreatmentParameters",
       "acquisitionType",
+      "setupMenu",
+      "parameterDefinitions",
     ] as const;
 
     const update: Record<string, any> = {};
