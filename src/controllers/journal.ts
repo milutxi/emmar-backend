@@ -2,6 +2,16 @@ import { Request, Response } from "express";
 import TreatmentParameters from "../models/treatmentParameters";
 import Journal from "../models/journal";
 
+const getMachineIdsFromSettings = (session: any) => {
+  if (!Array.isArray(session.machineSettings)) {
+    return [];
+  }
+
+  return session.machineSettings
+    .map((setting: any) => setting.machineId)
+    .filter(Boolean);
+};
+
 export const createJournal = async (req: Request, res: Response) => {
   //console.log(req.body);
   try {
@@ -14,6 +24,12 @@ export const createJournal = async (req: Request, res: Response) => {
         );
         session.treatmentParametersId = savedParameters._id;
         delete session.treatmentParameters;
+      }
+
+      const machineIdsFromSettings = getMachineIdsFromSettings(session);
+
+      if (machineIdsFromSettings.length > 0) {
+        session.machineIds = machineIdsFromSettings;
       }
     }
 
@@ -53,8 +69,8 @@ export const getJournalsByClient = async (req: Request, res: Response) => {
       .populate("treatments.machineIds")
       .populate("treatments.treatmentParametersId")
       .populate("medicalHistoryId")
-      .populate("consentFormId");
-
+      .populate("consentFormId")
+      .populate("treatments.machineSettings.machineId");
     return res.status(200).json(journals);
   } catch (error: any) {
     console.error("Get journals by client error:", error);
@@ -67,7 +83,7 @@ export const getJournalsByClient = async (req: Request, res: Response) => {
 };
 
 export const getAllJournals = async (req: Request, res: Response) => {
-  try{
+  try {
     const journals = await Journal.find()
       .sort({ jDate: -1, createdAt: -1 })
       .populate("clientId")
@@ -75,10 +91,10 @@ export const getAllJournals = async (req: Request, res: Response) => {
       .populate("treatments.machineIds")
       .populate("treatments.treatmentParametersId")
       .populate("medicalHistoryId")
-      .populate("consentFormId");
-
-      return res.status(200).json(journals);
-  }catch (error:any) {
+      .populate("consentFormId")
+      .populate("treatments.machineSettings.machineId");
+    return res.status(200).json(journals);
+  } catch (error: any) {
     console.error("Get all journals error:", error);
 
     return res.status(500).json({
@@ -118,7 +134,7 @@ export const updateJournal = async (req: Request, res: Response) => {
       journalId,
       { $set: updateData },
       {
-        new: true,
+        returnDocument: "after",
         runValidators: true,
       },
     )
@@ -126,8 +142,8 @@ export const updateJournal = async (req: Request, res: Response) => {
       .populate("treatments.machineIds")
       .populate("treatments.treatmentParametersId")
       .populate("medicalHistoryId")
-      .populate("consentFormId");
-
+      .populate("consentFormId")
+      .populate("treatments.machineSettings.machineId");
     if (!updatedJournal) {
       return res.status(404).json({
         message: "Journal session not found",
@@ -154,15 +170,47 @@ const prepareJournalTreatmentsForUpdate = async (treatments: any[]) => {
         ? session.treatmentId._id
         : session.treatmentId;
 
-    const machineIds = Array.isArray(session.machineIds)
+    const machineSettings = Array.isArray(session.machineSettings)
+      ? session.machineSettings
+          .map((setting: any) => {
+            const machineId =
+              typeof setting.machineId === "object"
+                ? setting.machineId._id
+                : setting.machineId;
+
+            return {
+              machineId,
+              setupPath: Array.isArray(setting.setupPath)
+                ? setting.setupPath
+                : [],
+              parameters: Array.isArray(setting.parameters)
+                ? setting.parameters.map((parameter: any) => ({
+                    label: parameter.label,
+                    unit: parameter.unit || "",
+                    value: parameter.value || "",
+                  }))
+                : [],
+              comment: setting.comment || "",
+            };
+          })
+          .filter((setting: any) => setting.machineId)
+      : [];
+
+    const machineIdsFromOldField = Array.isArray(session.machineIds)
       ? session.machineIds.map((machine: any) =>
           typeof machine === "object" ? machine._id : machine,
         )
       : [];
 
+    const machineIds =
+      machineSettings.length > 0
+        ? machineSettings.map((setting: any) => setting.machineId)
+        : machineIdsFromOldField;
+
     const preparedSession: any = {
       treatmentId,
       machineIds,
+      machineSettings,
       duration: session.duration,
       price: session.price,
       discount: session.discount,
@@ -190,7 +238,7 @@ const prepareJournalTreatmentsForUpdate = async (treatments: any[]) => {
           existingTreatmentParametersId,
           cleanParameters,
           {
-            new: true,
+            returnDocument: "after",
             runValidators: true,
           },
         );

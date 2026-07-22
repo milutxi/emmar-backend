@@ -53,7 +53,7 @@ export const registerMachine = async (req: Request, res: Response) => {
       requiresTreatmentParameters,
       acquisitionType,
       setupMenu,
-      parameterDefinitions
+      parameterDefinitions,
     });
 
     const savedMachine = await machine.save();
@@ -226,7 +226,7 @@ export const editMachine = async (req: Request, res: Response) => {
       id,
       { $set: update },
       {
-        new: true,
+        returnDocument: "after",
         runValidators: true,
       },
     );
