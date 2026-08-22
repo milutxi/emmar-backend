@@ -11,6 +11,8 @@ import * as medicalHistoryController from "./controllers/medicalHistory";
 import * as journalController from "./controllers/journal";
 import * as authController from "./controllers/auth";
 
+import { authMiddleware } from "./middleware/authMiddleware";
+
 import cookieParser from "cookie-parser";
 
 const app = express();
@@ -36,11 +38,11 @@ app.post("/auth/logout", authController.logoutUser);
 app.get("/auth/me", authController.getMe);
 
 //handlers for clients
-app.post("/clients", clientController.registerClient);
-app.get("/clients", clientController.getAllClients);
-app.get("/clients/:id", clientController.getClient);
-app.delete("/clients/:id", clientController.deleteClient);
-app.put("/clients/:id", clientController.editClient);
+app.post("/clients", authMiddleware, clientController.registerClient);
+app.get("/clients", authMiddleware, clientController.getAllClients);
+app.get("/clients/:id", authMiddleware, clientController.getClient);
+app.delete("/clients/:id", authMiddleware, clientController.deleteClient);
+app.put("/clients/:id", authMiddleware, clientController.editClient);
 
 // handlers for diagnos - obsolet - not use
 app.post("/diagnos", diagnosController.registerDiagnos);
@@ -50,33 +52,32 @@ app.delete("/diagnos/:id", diagnosController.deleteDiagnos);
 app.put("/diagnos/:id", diagnosController.editDiagnos);
 
 // handlers for treatments
-app.post("/treatment", treatmentController.registerTreatment);
-app.get("/treatment", treatmentController.getAllTreatments);
-app.get("/treatment/:id", treatmentController.getTreatment);
-app.delete("/treatment/:id", treatmentController.deleteTreatment);
-app.put("/treatment/:id", treatmentController.editTreatment);
+app.post("/treatment", authMiddleware, treatmentController.registerTreatment);
+app.get("/treatment", authMiddleware, treatmentController.getAllTreatments);
+app.get("/treatment/:id", authMiddleware, treatmentController.getTreatment);
+app.delete("/treatment/:id", authMiddleware, treatmentController.deleteTreatment);
+app.put("/treatment/:id", authMiddleware, treatmentController.editTreatment);
 
 // handlers for machines
-app.post("/machine", machineController.registerMachine);
-app.get("/machine", machineController.getAllMachines);
-app.get("/machine/:id", machineController.getMachine);
-app.delete("/machine/:id", machineController.deleteMachine);
-app.patch("/machine/:id", machineController.editMachine);
+app.post("/machine", authMiddleware, machineController.registerMachine);
+app.get("/machine", authMiddleware, machineController.getAllMachines);
+app.get("/machine/:id", authMiddleware, machineController.getMachine);
+app.delete("/machine/:id", authMiddleware, machineController.deleteMachine);
+app.patch("/machine/:id", authMiddleware, machineController.editMachine);
 
 // handlers for journal
-app.post("/createJournal", journalController.createJournal);
-app.get("/journals/client/:clientId", journalController.getJournalsByClient);
-app.patch("/journals/:journalId", journalController.updateJournal);
+app.post("/createJournal", authMiddleware, journalController.createJournal);
+app.get("/journals/client/:clientId", authMiddleware, journalController.getJournalsByClient);
+app.patch("/journals/:journalId", authMiddleware, journalController.updateJournal);
 
 // handlers for consentForm
-app.post("/consentForm", consentFormController.createConsentForm);
-app.get("/consentForm", consentFormController.getAllConsentForms);
+app.post("/consentForm", authMiddleware, consentFormController.createConsentForm);
+app.get("/consentForm", authMiddleware, consentFormController.getAllConsentForms);
 
 // handlers for medicalHistory
-app.post("/medicalHistory", medicalHistoryController.createMedicalHistory);
-app.get("/medicalHistory/latest/:clientId", medicalHistoryController.getLatestMedicalHistory);
-app.get("/medicalHistory/client/:clientId", 
-  medicalHistoryController.getMedicalHistoriesByClient,
+app.post("/medicalHistory", authMiddleware, medicalHistoryController.createMedicalHistory);
+app.get("/medicalHistory/latest/:clientId", authMiddleware, medicalHistoryController.getLatestMedicalHistory);
+app.get("/medicalHistory/client/:clientId", authMiddleware, medicalHistoryController.getMedicalHistoriesByClient,
 );
 
 //handlers for global journals
