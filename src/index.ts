@@ -9,13 +9,31 @@ import * as machineController from "./controllers/machines";
 import * as consentFormController from "./controllers/consentForm";
 import * as medicalHistoryController from "./controllers/medicalHistory";
 import * as journalController from "./controllers/journal";
+import * as authController from "./controllers/auth";
+
+import cookieParser from "cookie-parser";
 
 const app = express();
 
 //middleware
 
-app.use(cors());
+const frontendURL = process.env.FRONTEND_URL || "http://localhost:5173";
+
+app.use(
+  cors({
+    origin: frontendURL,
+    credentials: true,
+  }),
+);
+app.use(cookieParser());
+
 app.use(express.json());
+
+//hanglers for auth
+app.post("/auth/register", authController.registerUser);
+app.post("/auth/login", authController.loginUser);
+app.post("/auth/logout", authController.logoutUser);
+app.get("/auth/me", authController.getMe);
 
 //handlers for clients
 app.post("/clients", clientController.registerClient);
