@@ -55,7 +55,11 @@ app.put("/diagnos/:id", diagnosController.editDiagnos);
 app.post("/treatment", authMiddleware, treatmentController.registerTreatment);
 app.get("/treatment", authMiddleware, treatmentController.getAllTreatments);
 app.get("/treatment/:id", authMiddleware, treatmentController.getTreatment);
-app.delete("/treatment/:id", authMiddleware, treatmentController.deleteTreatment);
+app.delete(
+  "/treatment/:id",
+  authMiddleware,
+  treatmentController.deleteTreatment,
+);
 app.put("/treatment/:id", authMiddleware, treatmentController.editTreatment);
 
 // handlers for machines
@@ -67,24 +71,48 @@ app.patch("/machine/:id", authMiddleware, machineController.editMachine);
 
 // handlers for journal
 app.post("/createJournal", authMiddleware, journalController.createJournal);
-app.get("/journals/client/:clientId", authMiddleware, journalController.getJournalsByClient);
-app.patch("/journals/:journalId", authMiddleware, journalController.updateJournal);
+app.get(
+  "/journals/client/:clientId",
+  authMiddleware,
+  journalController.getJournalsByClient,
+);
+app.patch(
+  "/journals/:journalId",
+  authMiddleware,
+  journalController.updateJournal,
+);
 
 // handlers for consentForm
-app.post("/consentForm", authMiddleware, consentFormController.createConsentForm);
-app.get("/consentForm", authMiddleware, consentFormController.getAllConsentForms);
+app.post(
+  "/consentForm",
+  authMiddleware,
+  consentFormController.createConsentForm,
+);
+app.get(
+  "/consentForm",
+  authMiddleware,
+  consentFormController.getAllConsentForms,
+);
 
 // handlers for medicalHistory
-app.post("/medicalHistory", authMiddleware, medicalHistoryController.createMedicalHistory);
-app.get("/medicalHistory/latest/:clientId", authMiddleware, medicalHistoryController.getLatestMedicalHistory);
-app.get("/medicalHistory/client/:clientId", authMiddleware, medicalHistoryController.getMedicalHistoriesByClient,
+app.post(
+  "/medicalHistory",
+  authMiddleware,
+  medicalHistoryController.createMedicalHistory,
+);
+app.get(
+  "/medicalHistory/latest/:clientId",
+  authMiddleware,
+  medicalHistoryController.getLatestMedicalHistory,
+);
+app.get(
+  "/medicalHistory/client/:clientId",
+  authMiddleware,
+  medicalHistoryController.getMedicalHistoriesByClient,
 );
 
 //handlers for global journals
 app.get("/journals", journalController.getAllJournals);
-
-
-
 
 app.get("/", (req, res) => {
   res.json({ message: "welcome to the app" });
@@ -93,11 +121,19 @@ app.get("/", (req, res) => {
 //MongoDB Connection through .env file to hide the URL
 const mongoURL = process.env.DB_URL;
 
-if (!mongoURL) throw Error("Missing db url");
+if (!mongoURL) {
+  throw new Error("Missing DB_URL environment variable");
+}
 
-mongoose.connect(mongoURL).then(() => {
-  const port = parseInt(process.env.PORT || "4000");
-  app.listen(port, () => {
-    console.log("Hola Sheila, Server listening on port " + port);
+const port = parseInt(process.env.PORT || "4000");
+
+mongoose
+  .connect(mongoURL)
+  .then(() => {
+    app.listen(port, () => {
+      console.log("Hola Sheila, Server listening on port " + port);
+    });
+  })
+  .catch((error) => {
+    console.error("MongoDB connection error:", error);
   });
-});
