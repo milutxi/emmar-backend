@@ -3,23 +3,19 @@
 // logoutUser   → remove login cookie
 // getMe        → check if user is already logged in
 
-
 // Request / Response → Express types
 // bcrypt             → hash password and compare password
 // jwt                → create and verify login token
 // User               → MongoDB User model
 
-
 // bcrypt does password security
 // jwt does login identity
 // cookie does browser session
-
 
 // Register → creates user with hashed password
 // Login    → checks password and creates HttpOnly cookie
 // Me       → reads cookie and returns current user
 // Logout   → removes cookie
-
 
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
@@ -32,7 +28,7 @@ const cookieName = "emmarToken";
 const getJwtSecret = () => {
   const jwtSecret = process.env.JWT_SECRET;
 
-  if(!jwtSecret) {
+  if (!jwtSecret) {
     throw new Error("Missing JWT_SECRET");
   }
 
@@ -58,15 +54,24 @@ const getCookieOptions = () => {
   return {
     httpOnly: true,
     secure: isProduction,
-    sameSite: isProduction ? "none" as const : "lax" as const,
+    sameSite: isProduction ? ("none" as const) : ("lax" as const),
     maxAge: 7 * 24 * 60 * 60 * 1000,
   };
 };
 
 export const registerUser = async (req: Request, res: Response) => {
+  if (
+    process.env.NODE_ENV === "production" &&
+    process.env.ALLOW_PUBLIC_REGISTER !== "true"
+  ) {
+    return res.status(403).json({
+      message: "Registration is disabled in production",
+    });
+  }
+
   const { name, email, password, role } = req.body;
 
-  try{
+  try {
     if (!name || !email || !password) {
       return res.status(400).json({
         message: "Name, email and password are required",
@@ -98,7 +103,7 @@ export const registerUser = async (req: Request, res: Response) => {
       email: savedUser.email,
       role: savedUser.role,
     });
-  }catch (error: any) {
+  } catch (error: any) {
     return res.status(500).json({
       message: "Internal Server Error",
       error: error.message,
@@ -109,7 +114,7 @@ export const registerUser = async (req: Request, res: Response) => {
 export const loginUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
-  try{
+  try {
     if (!email || !password) {
       return res.status(400).json({
         message: "Email and password are required",
@@ -118,16 +123,13 @@ export const loginUser = async (req: Request, res: Response) => {
 
     const user = await User.findOne({ email });
 
-    if(!user) {
+    if (!user) {
       return res.status(401).json({
         message: "Invalid email or password",
       });
     }
 
-    const passwordIsCorrect = await bcrypt.compare(
-      password,
-      user.passwordHash,
-    );
+    const passwordIsCorrect = await bcrypt.compare(password, user.passwordHash);
 
     if (!passwordIsCorrect) {
       return res.status(401).json({
@@ -145,8 +147,7 @@ export const loginUser = async (req: Request, res: Response) => {
       email: user.email,
       role: user.role,
     });
-
-  }catch (error: any){
+  } catch (error: any) {
     return res.status(500).json({
       message: "Internal Server Error",
       error: error.message,
@@ -155,14 +156,13 @@ export const loginUser = async (req: Request, res: Response) => {
 };
 
 export const logoutUser = async (req: Request, res: Response) => {
-  try{
+  try {
     res.clearCookie(cookieName, getCookieOptions());
 
     return res.status(200).json({
       message: "Logged out",
     });
-    
-  }catch (error: any) {
+  } catch (error: any) {
     return res.status(500).json({
       message: "Internal Server Error",
       error: error.message,
@@ -171,7 +171,7 @@ export const logoutUser = async (req: Request, res: Response) => {
 };
 
 export const getMe = async (req: Request, res: Response) => {
-  try{
+  try {
     const token = req.cookies?.[cookieName];
 
     if (!token) {
@@ -194,8 +194,7 @@ export const getMe = async (req: Request, res: Response) => {
     }
 
     return res.status(200).json(user);
-
-  }catch (error: any) {
+  } catch (error: any) {
     return res.status(401).json({
       message: "Invalid or expired token",
       error: error.message,
