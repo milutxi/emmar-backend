@@ -34,6 +34,6 @@ const ConsultationSchema = new Schema<IConsultation>({
   timestamps: true
 });
 
-const Consulation = model<IConsultation>('Consultation', ConsultationSchema);
+const Consultation = model<IConsultation>('Consultation', ConsultationSchema);
 
-export default Consulation;
+export default Consultation;
