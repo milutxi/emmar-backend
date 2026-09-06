@@ -121,7 +121,9 @@ app.get("/", (req, res) => {
 
 //handlers for consultations
 app.post("/consultations", authMiddleware, consultationController.registerConsultation);
-app.get("consultations/client/:clientId", authMiddleware, consultationController.getConsultationsByClient);
+app.get("/consultations/client/:clientId", authMiddleware, consultationController.getConsultationsByClient);
+app.get("/consultations/:consultationId", authMiddleware, consultationController.getConsultation);
+app.patch("/consultations/:consultationId", authMiddleware, consultationController.editConsultation);
 
 //MongoDB Connection through .env file to hide the URL
 const mongoURL = process.env.DB_URL;
