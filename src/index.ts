@@ -10,6 +10,7 @@ import * as consentFormController from "./controllers/consentForm";
 import * as medicalHistoryController from "./controllers/medicalHistory";
 import * as journalController from "./controllers/journal";
 import * as authController from "./controllers/auth";
+import * as consultationController from "./controllers/consultation";
 
 import { authMiddleware } from "./middleware/authMiddleware";
 
@@ -117,6 +118,10 @@ app.get("/journals", journalController.getAllJournals);
 app.get("/", (req, res) => {
   res.json({ message: "welcome to the app" });
 });
+
+//handlers for consultations
+app.post("/consultations", authMiddleware, consultationController.registerConsultation);
+app.get("consultations/client/:clientId", authMiddleware, consultationController.getConsultationsByClient);
 
 //MongoDB Connection through .env file to hide the URL
 const mongoURL = process.env.DB_URL;
