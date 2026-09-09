@@ -1,5 +1,16 @@
 node_modules
 .env
-db
-dist
+.env.*
+db/
+dist/
 
+# Private Emmar import data
+private-import-files/
+*.xlsx
+*.xls
+*.csv
+
+# Mongo exports / backups
+*.archive
+*.dump
+*.bson
