@@ -59,6 +59,22 @@ const getCookieOptions = () => {
   };
 };
 
+const getTokenFromRequest = (req: Request) => {
+  const cookieToken = req.cookies?.[cookieName];
+
+  if (cookieToken) {
+    return cookieToken;
+  }
+
+  const authHeader = req.headers.authorization;
+
+  if(authHeader?.startsWith("Bearer ")) {
+    return authHeader.replace("Bearer ", "");
+  }
+
+  return null;
+};
+
 export const registerUser = async (req: Request, res: Response) => {
   if (
     process.env.NODE_ENV === "production" &&
@@ -146,6 +162,7 @@ export const loginUser = async (req: Request, res: Response) => {
       name: user.name,
       email: user.email,
       role: user.role,
+      token,
     });
   } catch (error: any) {
     return res.status(500).json({
@@ -172,7 +189,7 @@ export const logoutUser = async (req: Request, res: Response) => {
 
 export const getMe = async (req: Request, res: Response) => {
   try {
-    const token = req.cookies?.[cookieName];
+    const token = getTokenFromRequest(req);
 
     if (!token) {
       return res.status(401).json({

@@ -23,13 +23,29 @@ const getJwtSecret = () => {
   return jwtSecret;
 };
 
+const getTokenFromRequest = (req: Request) => {
+  const cookieToken = req.cookies?.[cookieName];
+
+  if (cookieToken) {
+    return cookieToken;
+  }
+
+  const authHeader = req.headers.authorization;
+
+  if(authHeader?.startsWith("Bearer ")) {
+    return authHeader.replace("Bearer", "");
+  }
+
+  return null;
+};
+
 export const authMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const token = req.cookies?.[cookieName];
+    const token = getTokenFromRequest(req);
 
     if (!token) {
       res.status(401).json({
