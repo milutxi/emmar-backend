@@ -16,28 +16,12 @@ export interface AuthenticatedRequest extends Request {
 const getJwtSecret = () => {
   const jwtSecret = process.env.JWT_SECRET;
 
-  if(!jwtSecret) {
+  if (!jwtSecret) {
     throw new Error("Missing JWT_SECRET");
   }
 
   return jwtSecret;
 };
-
-// const getTokenFromRequest = (req: Request) => {
-//   const cookieToken = req.cookies?.[cookieName];
-
-//   if (cookieToken) {
-//     return cookieToken;
-//   }
-
-//   const authHeader = req.headers.authorization;
-
-//   if(authHeader?.startsWith("Bearer ")) {
-//     return authHeader.replace("Bearer", "");
-//   }
-
-//   return null;
-// };
 
 const getTokenFromRequest = (req: Request) => {
   const authHeader = req.headers.authorization;
@@ -74,7 +58,7 @@ export const authMiddleware = async (
       userId: string;
       role: UserRole;
     };
-    
+
     const user = await User.findById(decoded.userId).select("_id role");
 
     if (!user) {
@@ -90,8 +74,7 @@ export const authMiddleware = async (
     };
 
     next();
-
-  } catch (error:any) {
+  } catch (error: any) {
     res.status(401).json({
       message: "Invalid or expired token",
       error: error.message,

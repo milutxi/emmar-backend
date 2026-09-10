@@ -59,22 +59,6 @@ const getCookieOptions = () => {
   };
 };
 
-// const getTokenFromRequest = (req: Request) => {
-//   const cookieToken = req.cookies?.[cookieName];
-
-//   if (cookieToken) {
-//     return cookieToken;
-//   }
-
-//   const authHeader = req.headers.authorization;
-
-//   if(authHeader?.startsWith("Bearer ")) {
-//     return authHeader.replace("Bearer ", "");
-//   }
-
-//   return null;
-// };
-
 const getTokenFromRequest = (req: Request) => {
   const authHeader = req.headers.authorization;
 
